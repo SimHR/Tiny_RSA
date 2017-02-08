@@ -22,7 +22,46 @@ class RSA_Keygenerator:
     private_key = [N, d]
 
 
+def encrypte(raw_string, public_key):
+    enc_string = [0, ]
+    k = 0
+
+    for i in raw_string:
+        j = ord(i)
+
+        if k == 0:
+            enc_string[k] = (j ** public_key[1]) % public_key[0]
+            k += 1
+
+        else:
+            enc_string.append((j ** public_key[1]) % public_key[0])
+            k += 1
+
+    return enc_string
+
+
+def decrypte(enc_string, private_key):
+    dec_string = [0, ]
+    k = 0
+
+    for i in enc_string:
+        if k == 0:
+            dec_string[0] = ((i ** private_key[1]) % private_key[0])
+            k += 1
+
+        else:
+            dec_string.append((i ** private_key[1]) % private_key[0])
+            k += 1
+
+    return dec_string
+
+
 key = RSA_Keygenerator()
 
-print key.public_key
-print key.private_key
+string = raw_input("Please input any string:")
+
+encrypted_string = encrypte(string, key.public_key)
+print encrypted_string
+
+decrypted_string = decrypte(encrypted_string, key.private_key)
+print decrypted_string
